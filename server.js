@@ -1,9 +1,11 @@
+'use strict'
+
 const express = require('express');
 const Config = require('./config');
-const mongoose = require('mongooes');
+const mongoose = require('mongoose');
 const { PORT = 3000 } = process.env;
 const app = express();
-
+app.use(require('./routes/index'));
 mongoose.connect(Config.mongodb.dbConnectURI, Config.mongodb.options);
 mongoose.connection.on('error', function (e) {
   console.log('********************************************');
