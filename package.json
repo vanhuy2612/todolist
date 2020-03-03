@@ -1,0 +1,29 @@
+{
+  "name": "todolist",
+  "version": "1.0.0",
+  "description": "Lam project ve quan ly task ca nhan",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vanhuy2612/todolist.git"
+  },
+  "keywords": [
+    "Todolist"
+  ],
+  "author": "Dinh Van Huy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vanhuy2612/todolist/issues"
+  },
+  "homepage": "https://github.com/vanhuy2612/todolist#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongodb": "^3.5.4",
+    "mongoose": "^5.9.3",
+    "nodemon": "^2.0.2"
+  }
+}
