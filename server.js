@@ -17,3 +17,4 @@ mongoose.connection.on('error', function (e) {
 
 const server = require('http').createServer(app);
 server.listen(PORT);
+console.log('Server is listening on http:localhost:' + PORT);
