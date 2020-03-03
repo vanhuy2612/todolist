@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/vanhuy2612/todolist#readme",
   "dependencies": {
+    "await-to-js": "^2.1.1",
     "express": "^4.17.1",
     "mongodb": "^3.5.4",
     "mongoose": "^5.9.3",
