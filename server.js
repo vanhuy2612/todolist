@@ -1,7 +1,7 @@
 const express = require('express');
 const Config = require('./config');
 const mongoose = require('mongooes');
-
+const { PORT = 3000 } = process.env;
 const app = express();
 
 mongoose.connect(Config.mongodb.dbConnectURI, Config.mongodb.options);
@@ -14,4 +14,4 @@ mongoose.connection.on('error', function (e) {
 });
 
 const server = require('http').createServer(app);
-server.listen(3000);
+server.listen(PORT);
