@@ -1,3 +1,4 @@
+'use strict'
 const Router = require('express').Router();
 const TastCtrl = require('../app/controller/TaskController');
 
