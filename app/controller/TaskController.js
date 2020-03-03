@@ -9,6 +9,11 @@ class TaskController extends BaseController {
     async index (req, res) {
         return res.send('Hello world!');
     }
+
+    async store (req, res) {
+        return res.json({a: '1'});
+    }
+    // chuẩn viêt API: Restful API
 }
 
 module.exports = new TaskController();
