@@ -8,7 +8,8 @@ const mTAG = 'tasks';
 const projection = { delete: 0, __v: 0 }
 const FIELDS = {
     name: { type: String, index: true },
-    status : {type : String}, // Trang thai lam viec
+    description: { type: String, default: ''}, // Mô tả công việc
+    status : {type : String, default: 'to_do'}, // Trang thai lam viec
     time : {
         start : {type : Date}, // Ngay bat dau
         end : {type: Date} // Ngay ket thuc

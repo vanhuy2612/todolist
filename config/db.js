@@ -1,4 +1,4 @@
-const {DB_HOST, DB_PORT, DB_USER, DB_PASS, DB_NAME, DB_POOL_SIZE} = process.env;
+const {DB_HOST, DB_PORT, DB_USER, DB_PASS, DB_NAME, DB_POOL_SIZE = 10} = process.env;
 
 module.exports = {
   DB_HOST: DB_HOST || "127.0.0.1",
