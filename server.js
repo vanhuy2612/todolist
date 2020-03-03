@@ -1,12 +1,17 @@
-var express = require('express');
-var db = require('./config/db');
-var tasksSchema = require('./app/model/task');
+const express = require('express');
+const Config = require('./config');
+const mongoose = require('mongooes');
 
-var app = express();
+const app = express();
 
+mongoose.connect(Config.mongodb.dbConnectURI, Config.mongodb.options);
+mongoose.connection.on('error', function (e) {
+  console.log('********************************************');
+  console.log('*          MongoDB was not connect.     *');
+  console.log('********************************************\n');
+  console.log(e)
+  process.exit(1);
+});
 
-app.get('/', (req,res) => {
-    console.log('First app.');
-})
-
-app.listen(3000);   
+const server = require('http').createServer(app);
+server.listen(3000);
