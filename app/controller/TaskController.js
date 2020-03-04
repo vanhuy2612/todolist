@@ -12,6 +12,11 @@ class TaskController extends BaseController {
     }
 
     async store (req, res, next) {
+        // Way 1 :
+        // let task = new TaskModel({
+        //     data...
+        // })
+        // task.save();
         let data = req.body;
         let [err, task] = await to(TaskModel.insertOne(data));
         if (err) {
