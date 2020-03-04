@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <title><%= title%></title>
+    <style>
+        .taskLow {
+            background-color: rgb(8, 70, 22);
+        }
+
+        .taskNormal {
+            background-color: rgb(107, 107, 19);
+        }
+
+        .taskDanger {
+            background-color: red;
+        }
+
+        #addtask {
+            text-align: center;
+            margin: auto 200px;
+        }
+
+        .error {
+            background-color: rgb(245, 141, 141);
+            color: red;
+            text-align: left;
+        }
+        #them {
+            margin: auto;
+            text-align: center;
+        }
+    </style>
+    <script>
+        $(document).ready(() => {
+            $('.update').click(function () {
+                let id = $(this).attr('taskid');
+                let stat = $(this).attr('stat');
+                let status = $(this).attr('status');
+
+                if (stat == 1) {
+                    if (status < 3) status++;
+                } else {
+                    if (status > 1) status--;
+                }
+
+                let url = '/api/tasks?_id=' + id;
+                $.ajax({
+                    type: 'PUT',
+                    dataType: 'json',
+                    url: url,
+                    data: {
+                        status: status
+                    },
+                    success: (data) => {
+                        console.log(data);
+                        window.location.href = '/';
+                    }
+                });
+            });
+            $('.delete').click(function () {
+                let id = $(this).attr('taskid')
+                /*
+                    Don't use : 
+                    $(btn).click( () => {
+                        $(this)... 
+                    })
+                    At that this -> window obj , not btn
+                */
+
+                let url = '/api/tasks?_id=' + id;
+                console.log(url);
+                $.ajax({
+                    type: 'DELETE',
+                    dataType: 'json',
+                    url: url,
+                    success: (data) => {
+                        console.log(data);
+                        window.location.href = '/';
+                    }
+                });
+            });
+            $('#addtask').hide();
+            $('#them').click(function () {
+                $('#addtask').show();
+            });
+
+        });
+    </script>
+</head>
+
+<body>
+    <h1><%= title%></h1>
+    
+    <button id="them" class="btn btn-primary">Add Task</button>
+    <!-- Error     -->
+    <% for(var i=0;i<errors.length;i++) { %>
+    <div class="error"><%= errors[i].msg%></div>
+    <% } %>
+    <form id="addtask" action="/api/tasks" method="POST">
+        <input type="text" name="name" placeholder="Name">
+        <input type="text" name="status" placeholder="Status : 1,2,3">
+        <input type="text" name="timestart" placeholder="Time Stat : YYYY-MM-DD">
+        <input type="text" name="timeend" placeholder="Time End : YYYY-MM-DD">
+        <input type="text" name="des" placeholder="des">
+        <button type="submit">Add</button>
+    </form>
+    <table class="table table-dark table-responsive">
+        <thead class="thead-inverse">
+            <tr>
+                <th>To do</th>
+                <th>Doing</th>
+                <th>Done</th>
+                <th colspan="2">UPDATE</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <% tasks.forEach( (task) => { %>
+            <tr>
+                <!-- Render task -->
+                <% if (task.status=='1') { %>
+                    <% var now = new Date(); %>
+                    <% var end = task.time.end;%>
+                    <% var range = (end - now)/86400000;%>
+                    <% if(range<=5) { %>
+                        <td class="taskDanger" scope="row">
+                            < 5 days <br>
+                    <%} else if (range<=10) { %>
+                        <td class="taskNormal" scope="row">
+                            > 5 days and < 10 days <br>
+                    <%} else { %>
+                        <td class="taskLow" scope="row">
+                            > 10 days <br>
+                    <%}%>              
+                        <%= task.name%><br>
+                    </td>
+                    <td></td>
+                    <td></td>
+
+                <% } else if(task.status=='2') { %>
+
+                    <td></td>
+                    <% var now = new Date(); %>                    
+                    <% var end = task.time.end;%>
+                    <% var range = (end - now)/86400000;%>
+                    <% if(range<=5) { %>
+                        <td class="taskDanger" scope="row">
+                            < 5 days <br>
+                    <%} else if (range<=10) { %>
+                        <td class="taskNormal" scope="row">
+                            > 5 days and < 10 days <br>
+                    <%} else { %>
+                        <td class="taskLow" scope="row">
+                            > 10 days <br>
+                    <%}%>              
+                        <%= task.name%><br>
+                    </td>
+                    <td></td>
+
+                <%} else { %>
+
+                    <td></td>
+                    <td></td>
+                    <% var now = new Date(); %>
+                    <% var end = task.time.end;%>
+                    <% var range = (end - now)/86400000;%>
+                    <% if(range<=5) { %>
+                        <td class="taskDanger" scope="row">
+                            < 5 days <br>
+                    <%} else if (range<=10) { %>
+                        <td class="taskNormal" scope="row">
+                            > 5 days and < 10 days <br>
+                    <%} else { %>
+                        <td class="taskLow" scope="row">
+                            > 10 days <br>
+                    <%}%>              
+                        <%= task.name%><br>
+                    </td>
+
+                <%}%>
+                <!-- Btn  -->
+                <td><button class="update" status='<%= task.status%>' stat=-1 taskid='<%= task._id %>' >Lùi</button>
+                </td>
+                <td><button class="update" status='<%= task.status%>' stat=1 taskid='<%= task._id %>'>Tiến</button></td>
+                <td><button class="delete" status='<%= task.status%>' taskid='<%= task._id %>'>Delete</button></td>
+            </tr>
+
+            <%})%>
+        </tbody>
+    </table>
+</body>
+
+</html>

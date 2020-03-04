@@ -4,8 +4,19 @@ const express = require('express');
 const Config = require('./config');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const path = require('path');
+const session = require('express-session');
 const { PORT = 3000 } = process.env;
 const app = express();
+// Set session:
+app.use(session({ // Session login
+    secret : 'secret',
+    resave : true,
+    saveUninitialized : true
+}));
+// Set view : 
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 // Disable caching of scripts for easier testing
 app.use(function noCache(req, res, next) {
     if (req.url.indexOf('/scripts/') === 0) {
@@ -29,7 +40,9 @@ app.use(function (err, req, res, next) {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-app.use(require('./routes/index'));
+//Router for index page:
+app.use('/',require('./routes/index'));
+
 mongoose.connect(Config.mongodb.dbConnectURI, Config.mongodb.options);
 mongoose.connection.on('error', function (e) {
   console.log('********************************************');

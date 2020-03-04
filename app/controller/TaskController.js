@@ -3,13 +3,28 @@ const TaskModel = require('../model/task');
 const BaseController = require('./BaseController');
 const to = require('await-to-js').default;
 const mongoose = require('mongoose');
+const { check, validationResult } = require('express-validator');
+
+
+
+
 class TaskController extends BaseController {
     constructor () {
         super(TaskController);
     }
 
     async index (req, res) {
-        return res.send('Hello world!');
+        let [err, tasks] = await to(TaskModel.find({}));
+
+        if (err) {
+            return res.status(400).json({message : 'Fail'});
+        }
+        console.log(req.session);
+        res.render('index', {
+            title : 'Index Page',
+            errors : req.session.errors || [],
+            tasks : tasks
+        })
     }
 
     async store (req, res, next) {
@@ -18,18 +33,37 @@ class TaskController extends BaseController {
         //     data...
         // })
         // task.save();
-        let data = req.body;
-        let [err, task] = await to(TaskModel.insertOne(data));
-        if (err) {
-            return res.status(400).json({message: 'Fail'});
+        
+        let errors = validationResult(req).array();
+        
+        if (errors.length > 0) {
+            console.log(errors);
+            req.session.errors = errors;
+            
+            res.redirect('/');
+        } else {
+            let data = {
+                name : req.body.name,
+                status : req.body.status,
+                time : {
+                    start : req.body.timestart,
+                    end : req.body.timeend
+                },
+                des : req.body.des  
+            }
+            let [err, task] = await to(TaskModel.insertOne(data));
+            if (err) {
+                return res.status(400).json({message: 'Fail'});
+            }
+            
+            return res.redirect('/');
         }
-        console.log('task', task);
-        return res.json({message: 'OK', task});
+        
     }
 
     async update (req, res, next) {
-        let _id = mongoose.mongo.ObjectId(req.body.id);
-        let data = req.body;
+        let _id = mongoose.mongo.ObjectId(req.query._id); // propeties in query params
+        let data = req.body; // data for update in body
 
         let [err, task] = await to(TaskModel.updateMany({_id : _id}, data));
         if (err) {
@@ -40,7 +74,7 @@ class TaskController extends BaseController {
     }
     
     async delete (req, res, next) {
-        let _id = mongoose.mongo.ObjectId(req.body.id);
+        let _id = mongoose.mongo.ObjectId(req.query._id);
 
         let [err, task] = await to(TaskModel.deleteMany({_id : _id}));
         if (err) {
@@ -50,7 +84,14 @@ class TaskController extends BaseController {
         return res.json({message: 'OK', task});
     }
     // chuẩn viêt API: Restful API
+    async findTaskByID (req, res, next) {
+        let _id = mongoose.mongo.ObjectId(req.query.id);
 
+        let [err, task] = await to(TaskModel.findById({ _id : _id}));
+        if (err) {
+            return res.status(400).json({message : 'Fail'});
+        }
+    }
 }
 
 module.exports = new TaskController();
