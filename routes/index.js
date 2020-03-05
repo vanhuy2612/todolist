@@ -6,6 +6,7 @@ var UserCtrl= require('../app/controller/UserController');
 var validateUser = require('../app/validator/validateUser');
 
 const to = require('await-to-js').default;
+// Tách : Router views, Router api 
 
 // Router for task:
 Router.get('/', TaskCtrl.index);

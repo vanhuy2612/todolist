@@ -12,3 +12,4 @@
             //temp1 Promise { true }
             //temp2 true
         }
++ Tách : Router views, Router api 
