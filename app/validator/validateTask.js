@@ -1,6 +1,6 @@
 const { check, validationResult } = require('express-validator');
 
-const validateTask = () => {
+module.exports = () => {
     return [
         check('name').isLength({min:3}).withMessage('Name is min 3 character'),
         check('status').isNumeric().withMessage('Status is a numeric').isIn([1,2,3]).withMessage("Status is between 1-3"),
@@ -18,4 +18,3 @@ const validateTask = () => {
         check('des').isLength({min:1}).withMessage('Des is empty, press any key')
     ];
 }
-module.exports = validateTask;

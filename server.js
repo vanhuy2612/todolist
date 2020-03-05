@@ -41,7 +41,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 //Router for index page:
-app.use('/',require('./routes/index'));
+app.use(require('./routes/index'));
 
 mongoose.connect(Config.mongodb.dbConnectURI, Config.mongodb.options);
 mongoose.connection.on('error', function (e) {
