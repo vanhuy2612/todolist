@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const path = require('path');
 const session = require('express-session');
+const AuthMiddleware = require('./app/middleware/auth.middleware');
 const { PORT = 3000 } = process.env;
 const app = express();
 // Set session:
@@ -39,6 +40,8 @@ app.use(function (err, req, res, next) {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+
+app.use(AuthMiddleware);
 
 //Router for index page:
 app.use(require('./routes/index'));

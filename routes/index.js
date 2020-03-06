@@ -4,9 +4,12 @@ const TaskCtrl = require('../app/controller/TaskController');
 const validateTask = require('../app/validator/validateTask');
 var UserCtrl= require('../app/controller/UserController');
 var validateUser = require('../app/validator/validateUser');
+const AuthMiddleware = require('../app/middleware/auth.middleware');
 
 const to = require('await-to-js').default;
-// Tách : Router views, Router api 
+
+// Sử dụng xác thực trong các router.
+// Router.use(AuthMiddleware);
 
 // Router for task:
 require('./views/task')(Router);
