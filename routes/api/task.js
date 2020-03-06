@@ -1,9 +1,7 @@
 'use strict'
 
-const TaskCtrl = require('../../app/controller/TaskController');
+const TaskCtrl = require('../../app/controller/api/task.api.controller');
 const validateTask = require('../../app/validator/validateTask');
-var UserCtrl= require('../../app/controller/UserController');
-var validateUser = require('../../app/validator/validateUser');
 
 const to = require('await-to-js').default;
 

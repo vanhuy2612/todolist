@@ -1,6 +1,6 @@
 'use strict'
-const TaskModel = require('../model/task');
-const BaseController = require('./BaseController');
+const TaskModel = require('../../model/task');
+const APIController = require('./api.controller');
 const to = require('await-to-js').default;
 const mongoose = require('mongoose');
 const { check, validationResult } = require('express-validator');
@@ -8,9 +8,9 @@ const { check, validationResult } = require('express-validator');
 
 
 
-class TaskController extends BaseController {
+class TaskApiController extends APIController {
     constructor() {
-        super(TaskController);
+        super(TaskApiController, TaskModel);
     }
 
     async index(req, res) {
@@ -93,4 +93,4 @@ class TaskController extends BaseController {
 
 }
 
-module.exports = new TaskController();
+module.exports = new TaskApiController();
