@@ -38,8 +38,7 @@ class TaskApiController extends APIController {
         if (errors.length > 0) {
             console.log(errors);
             req.session.errors = errors;
-
-            res.redirect('/');
+            return res.json(errors);
         } else {
             let data = {
                 name: req.body.name,
@@ -54,7 +53,7 @@ class TaskApiController extends APIController {
             if (err) {
                 return res.status(400).json({ message: 'Fail' });
             }
-            return res.redirect('/');
+            return res.json(task);
         }
 
     }

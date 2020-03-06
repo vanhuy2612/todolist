@@ -41,6 +41,7 @@ app.use(function (err, req, res, next) {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
+// Sử dụng midleware function to authorization : 
 app.use(AuthMiddleware);
 
 //Router for index page:
