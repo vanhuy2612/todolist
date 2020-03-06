@@ -80,6 +80,8 @@ class UserController extends BaseController {
             let ok = bcrypt.compareSync(req.body.password, user.password);
             if (!ok) return res.status(400).json({ msg: "Password isnt correct." });
 
+            // Create token
+            // return result.
             res.redirect('/');
         } else res.status(400).json({ msg: "Your email is not available." });
     }

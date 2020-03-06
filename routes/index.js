@@ -9,16 +9,11 @@ const to = require('await-to-js').default;
 // Tách : Router views, Router api 
 
 // Router for task:
-Router.get('/', TaskCtrl.index);
-Router.post('/api/tasks',validateTask(), TaskCtrl.store);
-Router.put('/api/tasks', TaskCtrl.update);
-Router.delete('/api/tasks', TaskCtrl.delete);
-Router.get('/api/hello-world', (req, res) => {
-    res.send('Hello World');
-});
+require('./views/task')(Router);
+require('./api/task')(Router);
 
 // Route for user: 
-//Router.post('/api/register',validateUser(),UserCtrl.store);
-require('./user')(Router);
+require('./views/user')(Router);
+require('./api/user')(Router);
 
 module.exports = Router;
